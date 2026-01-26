@@ -1,6 +1,6 @@
 
-const API_BASE = "http://localhost:4000/api";
-
+// const API_BASE = "http://localhost:4000/api";
+const API_BASE = "https://shop-locator-backend.vercel.app/api";
 function getToken() {
   return localStorage.getItem("token");
 }
