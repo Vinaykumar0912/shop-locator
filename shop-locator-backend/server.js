@@ -1,8 +1,4 @@
-app.use(cors({
-    origin: '*', // This allows ALL websites to talk to your backend for testing
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));// server.js
+// server.js
 import dotenv from "dotenv";
 dotenv.config();
 
