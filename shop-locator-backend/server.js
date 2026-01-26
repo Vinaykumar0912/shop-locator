@@ -18,7 +18,6 @@ import customerRoutes from "./routes/customer.js";
 const app = express();
 
 // middlewares
-app.use(cors());
 const cors = require('cors');
 
 app.use(cors({

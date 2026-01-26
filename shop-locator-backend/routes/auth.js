@@ -4,7 +4,7 @@ import pool from "../db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { auth } from "../middleware/auth.js";
-import { sendOTPEmail } from "../services/emailservice.js"; 
+import { sendOTPEmail } from "../services/emailService.js"; 
 
 const router = express.Router();
 
