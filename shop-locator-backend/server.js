@@ -15,6 +15,17 @@ const app = express();
 
 // middlewares
 app.use(cors());
+const cors = require('cors');
+
+app.use(cors({
+    origin: [
+        'https://shop-locator-frontend.vercel.app', // Your new live frontend
+        'http://127.0.0.1:5500',                   // Your local live server
+        'http://localhost:5500'                    // Alternative local link
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 app.use(express.json()); // Correctly parses JSON payloads
 
 // routes
