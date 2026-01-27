@@ -122,7 +122,7 @@
 //     }
 //   }
 // };
-// ✅ FIXED: Pointing to Vercel
+// apiClient.js
 const API_BASE = "https://shop-locator-v2.vercel.app/api";
 
 function getToken() {
@@ -133,7 +133,7 @@ function authHeaders(isJson = true) {
   const headers = {};
   if (isJson) headers["Content-Type"] = "application/json";
   const token = getToken();
-  if (token) headers["Authorization"] = "Bearer " + token;
+  if (token) headers["Authorization"] = `Bearer ${token}`;
   return headers;
 }
 
@@ -142,12 +142,13 @@ export const api = {
     async signInWithPassword({ email, password }) {
       const res = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
-        headers: authHeaders(),
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
       if (!res.ok) return { data: null, error: data };
       
+      // ✅ SAVE TOKEN IMMEDIATELY
       localStorage.setItem("token", data.token);
       return { data, error: null };
     },
@@ -155,7 +156,7 @@ export const api = {
     async signUp({ email, password, options }) {
       const res = await fetch(`${API_BASE}/auth/register`, {
         method: "POST",
-        headers: authHeaders(),
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
           password,
@@ -170,7 +171,7 @@ export const api = {
     async verifyOTP({ email, otp }) {
       const res = await fetch(`${API_BASE}/auth/verify-otp`, {
         method: "POST",
-        headers: authHeaders(),
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp })
       });
       const data = await res.json();
@@ -178,7 +179,6 @@ export const api = {
     }
   },
 
-  // ✅ RESTORED: All your original table logic
   from(table) {
     const query = `${API_BASE}/${table}`;
     let filters = [];
