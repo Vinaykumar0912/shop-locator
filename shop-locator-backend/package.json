@@ -21,9 +21,5 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
-  },
-  "description": "This backend is a conversion of your Supabase backend to a common mini-project stack: - Node.js + Express - PostgreSQL (no Supabase-only features) - JWT auth - Cloudinary for image uploads",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  }
 }
