@@ -162,6 +162,7 @@ async function loadShops() {
             return;
         }
 
+        // ✅ FIXED: Using 'res' variable as you defined it to prevent "res is not defined"
         const shops = await res.json();
 
         if (!shops || shops.length === 0) {
@@ -176,7 +177,7 @@ async function loadShops() {
 
     } catch (error) {
         console.error("Error loading shops:", error);
-        shopList.innerHTML = '<div class="error">Failed to load shops. Please try again later.</div>';
+        shopList.innerHTML = '<div class="error">Failed to load shops. Is the server running?</div>';
     }
 }
 
