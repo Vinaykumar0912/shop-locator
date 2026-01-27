@@ -196,7 +196,7 @@ async function handleItemCreate(event) {
             description: description
         };
 
-        // ✅ FIXED: Live Vercel URL for Item Creation
+        // ✅ FIXED: Live Vercel URL
         const res = await fetch("https://shop-locator-v2.vercel.app/api/items", {
             method: "POST",
             headers: authHeaders(),
@@ -232,7 +232,7 @@ async function uploadItemPhoto(itemId, file) {
         formData.append('image', file);
         const token = getToken();
         
-        // ✅ FIXED: Live Vercel URL for Photo Upload
+        // ✅ FIXED: Live Vercel URL
         await fetch(`https://shop-locator-v2.vercel.app/api/items/upload/${itemId}`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}` },
