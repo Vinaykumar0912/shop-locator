@@ -51,43 +51,48 @@
 // });
 document.addEventListener('DOMContentLoaded', () => {
     console.log("OTP Verification script loaded");
-    const otpForm = document.getElementById('otp-form');
-
-    // ✅ FIXED: Retrieve the email you saved in owner-register.js
+    
+    // Check both possible IDs for the form
+    const otpForm = document.getElementById('otp-form') || document.getElementById('verify-form');
+    
+    // Retrieve email from registration
     const email = localStorage.getItem('pendingEmail'); 
     const emailInput = document.getElementById('email');
 
-    // ✅ FIXED: Auto-fill the email field
+    // Auto-fill email
     if (email && emailInput) {
         emailInput.value = email;
     }
 
-    if (otpForm) {
-        otpForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const otp = document.getElementById('otp').value;
-
-            try {
-                // ✅ FIXED: Changed to Vercel URL
-                const response = await fetch('https://shop-locator-v2.vercel.app/api/auth/verify-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, otp })
-                });
-
-                // ✅ FIXED: Changed 'res' to 'response' to stop the ReferenceError
-                const data = await response.json();
-
-                if (response.ok) {
-                    alert('Verification successful! You can now login.');
-                    window.location.href = 'owner-login.html';
-                } else {
-                    alert('Verification failed: ' + (data.message || 'Unknown error'));
-                }
-            } catch (error) {
-                console.error('Verification error:', error);
-                alert('Server error. Please check if your backend is running.');
-            }
-        });
+    if (!otpForm) {
+        console.error("CRITICAL ERROR: Could not find the form with ID 'otp-form' or 'verify-form'");
+        return;
     }
+
+    otpForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        console.log("Verify button clicked!"); // If you don't see this in F12 console, the ID is wrong
+
+        const otp = document.getElementById('otp').value.trim();
+
+        try {
+            const response = await fetch('https://shop-locator-v2.vercel.app/api/auth/verify-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, otp })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert('Verification successful! You can now login.');
+                window.location.href = 'owner-login.html';
+            } else {
+                alert('Verification failed: ' + (data.message || 'Unknown error'));
+            }
+        } catch (error) {
+            console.error('Verification error:', error);
+            alert('Server error. Check your connection.');
+        }
+    });
 });

@@ -49,40 +49,45 @@
 //         alert("Server error. Please check if your backend is running.");
 //     }
 // });
-// customerverify-otp.js
-const email = localStorage.getItem("pendingEmail");
+document.addEventListener('DOMContentLoaded', () => {
+    const email = localStorage.getItem("pendingEmail");
+    const emailInput = document.getElementById("email");
 
-// ✅ FIXED: Auto-fill the email field if it exists in your HTML
-if (email && document.getElementById("email")) {
-    document.getElementById("email").value = email;
-}
+    if (email && emailInput) {
+        emailInput.value = email;
+    }
 
-document.getElementById("verify-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const otp = document.getElementById("otp").value.trim();
+    const verifyForm = document.getElementById("verify-form") || document.getElementById("otp-form");
 
-    try {
-        // ✅ FIXED: URL updated to Vercel
-        const response = await fetch("https://shop-locator-v2.vercel.app/api/auth/verify-otp", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, otp })
+    if (verifyForm) {
+        verifyForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            console.log("Customer verify clicked!");
+
+            const otp = document.getElementById("otp").value.trim();
+
+            try {
+                const response = await fetch("https://shop-locator-v2.vercel.app/api/auth/verify-otp", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, otp })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    alert(data.message || "Invalid OTP");
+                    return;
+                }
+
+                alert("OTP verified successfully!");
+                localStorage.removeItem("pendingEmail");
+                window.location.href = "customer-login.html";
+
+            } catch (err) {
+                console.error("Verification error:", err);
+                alert("Server error. Please try again.");
+            }
         });
-
-        // ✅ FIXED: Changed 'res' to 'response' to stop the crash
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.message || "Invalid OTP");
-            return;
-        }
-
-        alert("OTP verified successfully!");
-        localStorage.removeItem("pendingEmail");
-        window.location.href = "customer-login.html";
-
-    } catch (err) {
-        console.error("Verification error:", err);
-        alert("Server error. Please try again.");
     }
 });
