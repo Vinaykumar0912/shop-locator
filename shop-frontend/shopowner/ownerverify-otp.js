@@ -23,7 +23,7 @@ document.getElementById("verify-form").addEventListener("submit", async (e) => {
 
     try {
         // Send request to the fixed backend route
-        const res = await fetch("http://localhost:4000/api/auth/verify-otp", {
+        const response = await fetch('https://shop-locator-v2.vercel.app/api/auth/verify-otp',  {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, otp })
