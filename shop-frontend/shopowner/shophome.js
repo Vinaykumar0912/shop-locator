@@ -151,18 +151,18 @@ async function loadShops() {
     try {
         shopList.innerHTML = '<div class="loading">Loading shops...</div>';
 
-        // ✅ FIXED: Changed localhost to Vercel URL
+        // ✅ FIXED: Pointing to Vercel
         const res = await fetch("https://shop-locator-v2.vercel.app/api/shops", {
             headers: authHeaders()
         });
 
         if (res.status === 401) {
+            console.warn("Unauthorized! Redirecting to login...");
             localStorage.removeItem("token");
             window.location.href = 'owner-login.html';
             return;
         }
 
-        // ✅ FIXED: Using 'res' variable as you defined it to prevent "res is not defined"
         const shops = await res.json();
 
         if (!shops || shops.length === 0) {
@@ -177,7 +177,7 @@ async function loadShops() {
 
     } catch (error) {
         console.error("Error loading shops:", error);
-        shopList.innerHTML = '<div class="error">Failed to load shops. Is the server running?</div>';
+        shopList.innerHTML = '<div class="error">Failed to load shops. Please try again later.</div>';
     }
 }
 

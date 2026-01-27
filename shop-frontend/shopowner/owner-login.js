@@ -111,15 +111,18 @@ async function handleLogin(event) {
 
         showModal('Login successful! Redirecting...', 'success');
         setTimeout(() => {
-            // ✅ SAVE AUTH DATA (Logic preserved)
+            // ✅ SAVE AUTH DATA (Ensuring shophome.js can find it)
             localStorage.setItem("token", data.token);
-            localStorage.setItem("role", data.user.role);
+            if (data.user) {
+                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("role", data.user.role);
+            }
 
             window.location.href = 'shophome.html';
         }, 1500);
 
     } catch (error) {
-        showModal('Login failed: ' + (error.message || "Invalid credentials"), 'error');
+        showModal('Login failed: ' + (error.message || 'Invalid credentials'), 'error');
     }
 }
 
