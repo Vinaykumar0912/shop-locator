@@ -51,29 +51,38 @@
 // });
 const email = localStorage.getItem("pendingEmail");
 
-document.getElementById("verify-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const otp = document.getElementById("otp").value.trim();
+if (email && document.getElementById("email")) {
+    document.getElementById("email").value = email;
+}
 
-    try {
-        const response = await fetch("https://shop-locator-v2.vercel.app/api/auth/verify-otp", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, otp })
-        });
+const verifyForm = document.getElementById("verify-form");
+if (verifyForm) {
+    verifyForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const otp = document.getElementById("otp").value.trim();
 
-        const data = await response.json();
+        try {
+            const response = await fetch("https://shop-locator-v2.vercel.app/api/auth/verify-otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, otp })
+            });
 
-        if (!response.ok) {
-            alert(data.message || "Invalid OTP");
-            return;
+            // FIXED: Using 'response' instead of 'res'
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.message || "Invalid OTP");
+                return;
+            }
+
+            alert("OTP verified successfully! You can now log in.");
+            localStorage.removeItem("pendingEmail");
+            window.location.href = "customer-login.html";
+
+        } catch (err) {
+            console.error("Verification error:", err);
+            alert("Server error. Please try again.");
         }
-
-        alert("OTP verified successfully!");
-        localStorage.removeItem("pendingEmail");
-        window.location.href = "customer-login.html";
-
-    } catch (err) {
-        alert("Server error. Please try again.");
-    }
-});
+    });
+}

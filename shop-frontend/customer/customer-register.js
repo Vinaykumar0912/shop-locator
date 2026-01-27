@@ -130,11 +130,10 @@
 // }
 const API_URL = "https://shop-locator-v2.vercel.app/api/auth/register";
 
-// ... modal functions remain the same as your original ...
+// ... Keep your showModal and closeModal functions exactly as they are ...
 
 async function handleRegister(event) {
   event.preventDefault();
-  
   const fullName = document.getElementById("full_name").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;

@@ -51,37 +51,41 @@
 // });
 document.addEventListener('DOMContentLoaded', () => {
     console.log("OTP Verification script loaded");
-    const otpForm = document.getElementById('otp-form');
-    const email = localStorage.getItem("pendingEmail");
-
-    if (email && document.getElementById("email")) {
-        document.getElementById("email").value = email;
-    }
+    const otpForm = document.getElementById('otp-form') || document.getElementById('verify-form');
+    const email = localStorage.getItem('pendingEmail') || localStorage.getItem('registerEmail');
 
     if (otpForm) {
         otpForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const otp = document.getElementById('otp').value.trim();
 
+            if (!email) {
+                alert("Session expired. Please register again.");
+                window.location.href = "owner-register.html";
+                return;
+            }
+
             try {
+                // Point to live Vercel URL
                 const response = await fetch('https://shop-locator-v2.vercel.app/api/auth/verify-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, otp })
                 });
 
+                // FIXED: Using 'response' instead of 'res'
                 const data = await response.json();
 
                 if (response.ok) {
                     alert('Verification successful! You can now login.');
-                    localStorage.removeItem("pendingEmail");
+                    localStorage.removeItem('pendingEmail');
                     window.location.href = 'owner-login.html';
                 } else {
                     alert('Verification failed: ' + (data.message || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Verification error:', error);
-                alert('Server error. Please check your connection.');
+                alert('Server error. Please check if your backend is running.');
             }
         });
     }
