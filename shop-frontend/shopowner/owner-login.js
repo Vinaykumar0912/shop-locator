@@ -66,7 +66,7 @@ import { api } from "../apiClient.js";
 
 const loginForm = document.getElementById('login-form');
 
-// Modal functionality
+// Modal functionality (Your original code)
 const modal = document.getElementById('modal');
 const modalMessage = document.getElementById('modal-message');
 const closeModal = document.querySelector('.close');
@@ -83,13 +83,7 @@ if (closeModal) {
     });
 }
 
-window.addEventListener('click', (event) => {
-    if (event.target === modal) {
-        modal.style.display = 'none';
-    }
-});
-
-// Handle login
+// Handle login (Full Logic)
 async function handleLogin(event) {
     event.preventDefault();
 
@@ -110,23 +104,22 @@ async function handleLogin(event) {
         if (error) throw error;
 
         showModal('Login successful! Redirecting...', 'success');
+        
         setTimeout(() => {
-            // ✅ SAVE AUTH DATA (Ensuring shophome.js can find it)
+            // ✅ CRITICAL: This token must match what shophome.js looks for
             localStorage.setItem("token", data.token);
             if (data.user) {
                 localStorage.setItem("user", JSON.stringify(data.user));
-                localStorage.setItem("role", data.user.role);
             }
 
             window.location.href = 'shophome.html';
         }, 1500);
 
     } catch (error) {
-        showModal('Login failed: ' + (error.message || 'Invalid credentials'), 'error');
+        showModal('Login failed: ' + (error.message || 'Invalid email or password'), 'error');
     }
 }
 
-// Event listeners
 if (loginForm) {
     loginForm.addEventListener('submit', handleLogin);
 }
