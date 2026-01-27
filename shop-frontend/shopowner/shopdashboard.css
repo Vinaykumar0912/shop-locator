@@ -335,6 +335,15 @@ body {
     background-color: #2563eb;
     color: white; 
 }
+.edit-btn{
+    background-color: #2563eb;
+    color: white;
+}
+.delete-btn{
+    background-color:#ef4444;
+    color: white;
+}
+
 .btn-primary:hover {
     background-color: #1d4ed8;
 }
