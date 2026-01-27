@@ -128,12 +128,34 @@
 // } else {
 //   console.error("❌ Error: 'register-form' not found in HTML");
 // }
+// customer-register.js
 const API_URL = "https://shop-locator-v2.vercel.app/api/auth/register";
 
-// ... Keep your showModal and closeModal functions exactly as they are ...
+const modal = document.getElementById("modal");
+const modalMessage = document.getElementById("modal-message");
+const closeModal = document.querySelector(".close");
+
+function showModal(message, type = "info") {
+  modalMessage.textContent = message;
+  modalMessage.className = type;
+  modal.style.display = "block";
+}
+
+if (closeModal) {
+  closeModal.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+}
+
+window.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+});
 
 async function handleRegister(event) {
   event.preventDefault();
+  
   const fullName = document.getElementById("full_name").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
@@ -154,6 +176,7 @@ async function handleRegister(event) {
 
     if (!response.ok) throw new Error(data.message || "Registration failed");
 
+    // ✅ FIXED: Saves as pendingEmail to match customerverify-otp.js
     localStorage.setItem("pendingEmail", email);
     showModal("OTP Sent! Check your email.", "success");
 
@@ -165,3 +188,5 @@ async function handleRegister(event) {
     showModal(err.message || "Server Error", "error");
   }
 }
+
+document.getElementById("register-form").addEventListener("submit", handleRegister);

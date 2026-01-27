@@ -57,11 +57,11 @@
 
 // // Event listeners
 // loginForm.addEventListener('submit', handleLogin);
+// customer-login.js
 import { api } from "../apiClient.js";
 
 const loginForm = document.getElementById('login-form');
 
-// Modal functionality
 const modal = document.getElementById('modal');
 const modalMessage = document.getElementById('modal-message');
 const closeModal = document.querySelector('.close');
@@ -84,7 +84,6 @@ window.addEventListener('click', (event) => {
     }
 });
 
-// Handle login
 async function handleLogin(event) {
     event.preventDefault();
 
@@ -106,7 +105,6 @@ async function handleLogin(event) {
 
         showModal('Login successful! Redirecting...', 'success');
         setTimeout(() => {
-            // Save token
             localStorage.setItem("token", data.token);
             window.location.href = 'customer-dashboard.html';
         }, 1500);
@@ -116,7 +114,6 @@ async function handleLogin(event) {
     }
 }
 
-// Event listeners
 if (loginForm) {
     loginForm.addEventListener('submit', handleLogin);
 }

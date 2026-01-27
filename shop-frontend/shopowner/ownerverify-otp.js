@@ -51,34 +51,35 @@
 // });
 document.addEventListener('DOMContentLoaded', () => {
     console.log("OTP Verification script loaded");
-    const otpForm = document.getElementById('otp-form') || document.getElementById('verify-form');
-    const email = localStorage.getItem('pendingEmail') || localStorage.getItem('registerEmail');
+    const otpForm = document.getElementById('otp-form');
+
+    // ✅ FIXED: Retrieve the email you saved in owner-register.js
+    const email = localStorage.getItem('pendingEmail'); 
+    const emailInput = document.getElementById('email');
+
+    // ✅ FIXED: Auto-fill the email field
+    if (email && emailInput) {
+        emailInput.value = email;
+    }
 
     if (otpForm) {
         otpForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const otp = document.getElementById('otp').value.trim();
-
-            if (!email) {
-                alert("Session expired. Please register again.");
-                window.location.href = "owner-register.html";
-                return;
-            }
+            const otp = document.getElementById('otp').value;
 
             try {
-                // Point to live Vercel URL
+                // ✅ FIXED: Changed to Vercel URL
                 const response = await fetch('https://shop-locator-v2.vercel.app/api/auth/verify-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, otp })
                 });
 
-                // FIXED: Using 'response' instead of 'res'
+                // ✅ FIXED: Changed 'res' to 'response' to stop the ReferenceError
                 const data = await response.json();
 
                 if (response.ok) {
                     alert('Verification successful! You can now login.');
-                    localStorage.removeItem('pendingEmail');
                     window.location.href = 'owner-login.html';
                 } else {
                     alert('Verification failed: ' + (data.message || 'Unknown error'));

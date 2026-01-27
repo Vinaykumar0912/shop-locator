@@ -122,7 +122,7 @@
 //     }
 //   }
 // };
-// const API_BASE = "http://localhost:4000/api";
+// ✅ FIXED: Pointing to Vercel
 const API_BASE = "https://shop-locator-v2.vercel.app/api";
 
 function getToken() {
@@ -177,5 +177,63 @@ export const api = {
       return { data, error: res.ok ? null : data };
     }
   },
-  // ... rest of your existing logic remains untouched
+
+  // ✅ RESTORED: All your original table logic
+  from(table) {
+    const query = `${API_BASE}/${table}`;
+    let filters = [];
+    let orderBy = "";
+
+    return {
+      select(columns = "*") {
+        filters.push(`select=${columns}`);
+        return this;
+      },
+      eq(column, value) {
+        filters.push(`${column}=eq.${value}`);
+        return this;
+      },
+      order(column, { ascending = true } = {}) {
+        orderBy = `order=${column}.${ascending ? "asc" : "desc"}`;
+        return this;
+      },
+      async single() {
+        const res = await fetch(`${query}?${filters.join("&")}&${orderBy}`, { 
+            headers: authHeaders(false) 
+        });
+        const data = await res.json();
+        return { data, error: res.ok ? null : data };
+      },
+      async insert(payload) {
+        const res = await fetch(query, {
+          method: "POST",
+          headers: authHeaders(),
+          body: JSON.stringify(payload[0] ?? payload)
+        });
+        const data = await res.json();
+        return { data, error: res.ok ? null : data };
+      },
+      async update(payload) {
+        const id = payload.id;
+        const body = { ...payload };
+        delete body.id;
+        const res = await fetch(`${query}/${id}`, {
+          method: "PUT",
+          headers: authHeaders(),
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        return { data, error: res.ok ? null : data };
+      },
+      async delete() {
+        const id = filters.find(f => f.startsWith("id=eq."))?.split(".")[1];
+        const res = await fetch(`${query}/${id}`, {
+          method: "DELETE",
+          headers: authHeaders(false)
+        });
+        const data = await res.json();
+        return { data, error: res.ok ? null : data };
+      }
+    };
+  }
 };

@@ -120,6 +120,7 @@ window.addEventListener("click", (event) => {
   }
 });
 
+// Handle registration
 async function handleRegister(event) {
   event.preventDefault();
 
@@ -128,6 +129,7 @@ async function handleRegister(event) {
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("confirm_password").value;
 
+  // Validation checks (Exactly as you uploaded)
   if (!fullName || !email || !password || !confirmPassword) {
     showModal("Please fill in all fields", "error");
     return;
@@ -138,22 +140,35 @@ async function handleRegister(event) {
     return;
   }
 
+  if (password.length < 6) {
+    showModal("Password must be at least 6 characters", "error");
+    return;
+  }
+
   try {
+    // Register user via apiClient (Now pointing to Vercel)
     const { data, error } = await api.auth.signUp({
       email,
       password,
       options: {
         data: {
           full_name: fullName,
-          role: "owner"
+          role: window.location.pathname.includes("owner") ? "owner" : "customer"
         }
       }
     });
 
-    if (error) throw error;
+    if (error) {
+      throw error;
+    }
 
+    // ✅ FIXED: Using 'pendingEmail' to match your OTP page
     localStorage.setItem("pendingEmail", email);
-    showModal("Registration successful! Redirecting to OTP...", "success");
+
+    showModal(
+      "Registration successful! Redirecting to OTP verification...",
+      "success"
+    );
 
     setTimeout(() => {
       window.location.href = "ownerverify-otp.html";
@@ -165,6 +180,7 @@ async function handleRegister(event) {
   }
 }
 
+// Attach event listener
 if (registerForm) {
-    registerForm.addEventListener("submit", handleRegister);
+  registerForm.addEventListener("submit", handleRegister);
 }
