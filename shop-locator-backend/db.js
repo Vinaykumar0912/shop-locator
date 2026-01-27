@@ -10,14 +10,17 @@
 // });
 
 // export default pool;
-const { Pool } = require('pg');
-require('dotenv').config();
+import pkg from 'pg';
+const { Pool } = pkg;
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const pool = new Pool({
-  connectionString: process.env.POSTGRES_URL, // Ensure this matches Vercel exactly
+  connectionString: process.env.POSTGRES_URL,
   ssl: {
-    rejectUnauthorized: false // This is required for Neon/Vercel connections
+    rejectUnauthorized: false
   }
 });
 
-module.exports = pool;
+export default pool;
