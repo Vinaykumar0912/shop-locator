@@ -336,13 +336,28 @@ body {
     color: white; 
 }
 .edit-btn{
-    background-color: #2563eb;
+     background: #1d4ed8;
+    border: 2px solid white;
     color: white;
+     padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+}
+.edit-btn:hover {
+    background: white;
+    color: #1d4ed8;
 }
 .delete-btn{
     background-color:#ef4444;
     color: white;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    border: 2px solid white;
 }
+.delete-btn:hover {
+    background-color: white;
+    color: #ef4444;
+}
+    
 
 .btn-primary:hover {
     background-color: #1d4ed8;
