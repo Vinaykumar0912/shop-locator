@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Owner Home - ShopTrio</title>
+    <link rel="stylesheet" href="shophome.css">
+    <link rel="stylesheet" href="../modal.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">Shop Owner Dashboard</h1>
+            <div class="header-actions">
+                <button id="account-btn" class="btn btn-outline">My Account</button>
+                <button id="logout-btn" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2>Your Shops</h2>
+                <button id="add-shop-btn" class="btn btn-primary">+ Add New Shop</button>
+            </div>
+
+            <div id="shop-list" class="shop-grid">
+                <div class="loading-spinner">Loading shops...</div>
+            </div>
+        </div>
+    </main>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-message"></p>
+        </div>
+    </div>
+
+    <script type="module" src="shophome.js"></script>
+</body>
+
+</html>

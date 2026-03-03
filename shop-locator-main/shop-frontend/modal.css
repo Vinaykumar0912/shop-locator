@@ -1,0 +1,50 @@
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; 
+    z-index: 2000; /* Sit on top of everything */
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+    backdrop-filter: blur(2px); /* Nice blur effect */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 2rem;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 400px; /* Keep it small and neat */
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+}
+
+/* Different Message Colors */
+.modal-message.error { color: #dc2626; font-weight: 500; }
+.modal-message.success { color: #059669; font-weight: 500; }
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover { color: black; }
+
+/* Modal Action Buttons */
+.modal-actions, .modal-actions-delete {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
