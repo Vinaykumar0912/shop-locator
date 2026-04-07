@@ -42,28 +42,38 @@
 // };
 
 
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: "smtp-relay.brevo.com",
+  port: 587,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 export const sendOTPEmail = async (to, otp) => {
   try {
-    const response = await resend.emails.send({
-      from: "dixitvinaykumar78@gmail.com",
+    await transporter.sendMail({
+      from: '"Shop Locator" <no-reply@brevo.com>',
       to: to,
       subject: "Your OTP Code",
       html: `
-        <h2>Your OTP Code</h2>
-        <p>Your OTP is: <b>${otp}</b></p>
-        <p>This OTP will expire in 10 minutes.</p>
-      `
+        <div style="font-family: Arial; padding: 20px;">
+          <h2>🔐 Shop Locator Verification</h2>
+          <p>Your OTP code is:</p>
+          <h1 style="color: blue;">${otp}</h1>
+          <p>This OTP is valid for 10 minutes.</p>
+        </div>
+      `,
     });
 
-    console.log("✅ Email sent:", response);
+    console.log("✅ Email sent");
     return true;
 
   } catch (error) {
-    console.error("❌ Resend Error:", error);
+    console.error("❌ Email error:", error);
     return false;
   }
 };
