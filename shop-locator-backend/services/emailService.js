@@ -49,7 +49,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export const sendOTPEmail = async (to, otp) => {
   try {
     const response = await resend.emails.send({
-      from: "onboarding@resend.dev",
+      from: "dixitvinaykumar78@gmail.com",
       to: to,
       subject: "Your OTP Code",
       html: `
