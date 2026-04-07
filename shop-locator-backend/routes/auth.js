@@ -373,12 +373,13 @@ import express from "express";
 import pool from "../db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { auth } from "../middleware/auth.js"; 
+import { auth } from "../middleware/auth.js";
+import { sendOTPEmail } from "../services/emailService.js";
 
 const router = express.Router();
 
 /* =========================================
-   REGISTER ROUTE (EMAIL DISABLED)
+   REGISTER ROUTE (WITH RESEND EMAIL)
 ========================================= */
 router.post("/register", async (req, res) => {
   console.log("🚀 Register API hit");
@@ -442,12 +443,18 @@ router.post("/register", async (req, res) => {
       [userId, otp]
     );
 
-    // ❌ EMAIL DISABLED
-    console.log("📌 OTP (for testing):", otp);
+    // ✅ SEND EMAIL USING RESEND
+    console.log("📧 Sending OTP email...");
+    const emailSent = await sendOTPEmail(email, otp);
 
-    return res.status(201).json({
-      message: "OTP generated successfully (email disabled)",
-      otp: otp,
+    if (!emailSent) {
+      return res.status(500).json({
+        message: "Failed to send OTP email"
+      });
+    }
+
+    res.status(201).json({
+      message: `OTP sent to ${email}`,
       userId
     });
 
