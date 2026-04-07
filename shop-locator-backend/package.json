@@ -19,7 +19,8 @@
     "nodemailer": "^7.0.12",
     "pg": "^8.17.2"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.22"
-  }
+  
+  "dependencies": {
+  "resend": "^x.x.x"
+}
 }
