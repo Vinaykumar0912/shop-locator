@@ -56,7 +56,7 @@ const transporter = nodemailer.createTransport({
 export const sendOTPEmail = async (to, otp) => {
   try {
     await transporter.sendMail({
-      from: '"Shop Locator" <no-reply@brevo.com>',
+      from: '"Shop Locator" <a769e5001@smtp-brevo.com>',
       to: to,
       subject: "Your OTP Code",
       html: `
