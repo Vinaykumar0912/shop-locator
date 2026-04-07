@@ -44,6 +44,7 @@
 
 import nodemailer from "nodemailer";
 
+
 const transporter = nodemailer.createTransport({
   host: "smtp-relay.brevo.com",
   port: 587,
@@ -56,7 +57,7 @@ const transporter = nodemailer.createTransport({
 export const sendOTPEmail = async (to, otp) => {
   try {
     await transporter.sendMail({
-      from: '"Shop Locator" <a769e5001@smtp-brevo.com>',
+      from: '"Shop Locator" <vinaydixit0509@gmail.com>',
       to: to,
       subject: "Your OTP Code",
       html: `
